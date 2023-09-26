@@ -1,0 +1,27 @@
+version : "3.7"
+
+services:
+  
+  airfrance_db:
+    build:
+      context: ./airfrance_db
+    image: airfrance_db_image:latest
+    container_name: airfrance_db_container
+    ports:
+      - 30000:27017
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - .:/home/ubuntu/PROJECT/airfrance_db
+
+  airfrance_fastapi:
+    build:
+      context: ./airfrance_api
+    image: airfrance_api_image:latest
+    container_name: airfrance_api_container
+    ports:
+      - 8000:8000
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      - airfrance_db
